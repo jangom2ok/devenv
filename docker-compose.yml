@@ -1,0 +1,29 @@
+version: '2'
+services:
+  web:
+    build: .
+    command: bundle exec rails s -p 3000 -b '0.0.0.0'
+    container_name: devenv
+    depends_on:
+      - db
+    ports:
+      - 3000:3000
+    stdin_open: true
+    tty: true
+    volumes:
+      - .:/myapp
+      - bundle_cache:/usr/local/bundle
+    tmpfs:
+      - /myapp/tmp/pids
+  db:
+    image: mysql:5.7
+    ports:
+      - 33060:3306
+    volumes:
+      - mysqldata:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+volumes:
+  bundle_cache:
+  mysqldata:
+
